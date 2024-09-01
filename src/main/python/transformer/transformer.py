@@ -1,4 +1,5 @@
 import re
+from dataclasses import replace
 
 
 def import_file_lines(path):
@@ -20,21 +21,26 @@ def import_file_string(path):
 def tokenize(string) -> list[str]:
     return string.split("\n*")
 
-def replace_chars(line):
-    line = re.sub(r"{\d*,*\s*\d*}", "", line)
-    line = line.replace("\n", "")
-    line = (line
-            .replace("÷", "ʔ")
-            .replace("(PLB)", "")
-            .replace("TM", "2"))
-    line = re.sub(r"\s+", " ", line).strip()
-    return line
+def replace_chars(token):
+    token = re.sub(r"{\d*,*\s*\d*}", "", token)
+    token = token.replace("\n", "")
+    token = (token
+             .replace("÷", "ʔ")
+             .replace("(PLB)", "")
+             .replace("TM", "2"))
+    token = re.sub(r"\s+", " ", token).strip()
+    return token
 
-def to_csv(line):
-    if line.startswith('*'):
-        parts = line.split(" ")
-        if len(parts) > 1:
-            item = line.split(" ")[0]
-            meaning = line.split(" ")[1]
-            return item + ";" + meaning
-    return ""
+def to_csv(token):
+    token = replace_chars(token)
+    parts = token.split(" ")
+    if len(parts) > 1:
+        if "&" in parts:
+            item = token.replace("&", "~")
+            meaning = ""
+            return item + ";" + meaning + " \n"
+        else:
+            item = token.split(" ")[0]
+            meaning = token.split(" ")[1].replace("'", "")
+            return item + ";" + meaning + "\n"
+    return token + "; \n"
