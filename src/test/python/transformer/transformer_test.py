@@ -28,6 +28,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual("*ʔ; \n", to_csv("*÷"))
         self.assertEqual("*ʔa ~ *ga; \n", to_csv("*÷a & *ga"))
         self.assertEqual("*ʔ-ga2;mute/dumb/stupid\n", to_csv("*÷-gaTM (PLB) 'mute/dumb/\nstupid' {57, 165}"))
+        self.assertEqual("*ʔaŋ- ~ *ʔak-;noun prefix\n", to_csv("*÷a≥- & *÷ak- 'noun pre-\nfix' {522}"))
 
 if __name__ == '__main__':
     unittest.main()
